@@ -23,8 +23,8 @@ app.get("/", (req, res) => {
 app.use('/api/user', userRoutes);
 app.use('/api/chat', chatRoutes);
 app.use('/api/messages', messageRoutes)
-app.use(notfound);
-app.use(errorHandler);
+// app.use(notfound);
+// app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000
 const server = app.listen(PORT, () => {
@@ -36,7 +36,7 @@ const path = require("path");
 // Serve frontend build
 app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
-app.get("*", (req, res) => {
+app.get("/*", (req, res) => {
   res.sendFile(path.resolve(__dirname, "../frontend/dist/index.html"));
 });
 
@@ -47,6 +47,8 @@ const io = require('socket.io')(server, {
     origin: process.env.FRONTEND_URL || "*",
   }
 })
+app.use(notfound);
+app.use(errorHandler);
 const roomUsers = {};
 const roomCode = {};
 io.on("connection", (socket) => {
