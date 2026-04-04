@@ -4,7 +4,7 @@ import { Menu, Portal } from "@chakra-ui/react"
 import Editor from '@monaco-editor/react';
 import { io } from 'socket.io-client';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom';
-const ENDPOINT = "http://localhost:5000";
+const ENDPOINT = "/";
 var socket;
 function EditorPage() {
   const history = useHistory()
