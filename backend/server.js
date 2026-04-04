@@ -26,10 +26,10 @@ app.use('/api/messages', messageRoutes)
 // app.use(notfound);
 // app.use(errorHandler);
 
-const PORT = process.env.PORT || 5000
-const server = app.listen(PORT, () => {
-  console.log(`Server is running at ${PORT}`)
-});
+// const PORT = process.env.PORT || 5000
+// const server = app.listen(PORT, () => {
+//   console.log(`Server is running at ${PORT}`)
+// });
 
 const path = require("path");
 
@@ -39,7 +39,12 @@ app.use(express.static(path.join(__dirname, "../frontend/dist")));
 app.use((req, res) => {
   res.sendFile(path.resolve(__dirname, "../frontend/dist/index.html"));
 });
-
+app.use(notfound);
+app.use(errorHandler);
+const PORT = process.env.PORT || 5000
+const server = app.listen(PORT, () => {
+  console.log(`Server is running at ${PORT}`)
+});
 const io = require('socket.io')(server, {
   pingTimeout: 60000,
   transports: ["websocket", "polling"],
@@ -47,8 +52,7 @@ const io = require('socket.io')(server, {
     origin: process.env.FRONTEND_URL || "*",
   }
 })
-app.use(notfound);
-app.use(errorHandler);
+
 const roomUsers = {};
 const roomCode = {};
 io.on("connection", (socket) => {
