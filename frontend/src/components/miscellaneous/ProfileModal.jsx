@@ -3,6 +3,8 @@ import { Button, Center, CloseButton, Dialog, Portal, Text, Avatar } from "@chak
 import { FaRegEye } from "react-icons/fa";
 function ProfileModal({ user, info }) {
   const [open, setOpen] = useState(false)
+  console.log(user);
+console.log(user.name);
   return (
     <>
       <Dialog.Root placement="center" size="sm" >
