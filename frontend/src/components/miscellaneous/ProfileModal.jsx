@@ -2,9 +2,9 @@ import React, { useState } from 'react'
 import { Button, Center, CloseButton, Dialog, Portal, Text, Avatar } from "@chakra-ui/react"
 import { FaRegEye } from "react-icons/fa";
 function ProfileModal({ user, info }) {
-  const [open, setOpen] = useState(false)
   console.log(user);
-console.log(user.name);
+console.log(user.pic);
+  const [open, setOpen] = useState(false)
   return (
     <>
       <Dialog.Root placement="center" size="sm" >
