@@ -23,10 +23,11 @@ console.log(user.pic);
                 <Dialog.Title fontFamily="Work sans" fontSize="3xl" textAlign="center">{user.name}</Dialog.Title>
               </Dialog.Header>
               <Dialog.Body display="flex" justifyContent="center">
-                <Avatar.Root size="2xl">
+                {/* <Avatar.Root size="2xl">
                   <Avatar.Fallback name={user.name} />
                   <Avatar.Image src={user.pic} />
-                </Avatar.Root>
+                </Avatar.Root> */}
+                <img src={user.pic} alt="profile" width="150" />
               </Dialog.Body>
               <Dialog.Footer display="flex" justifyContent="center">
                 <Text fontSize="2xl" fontFamily="Work sans" color="gray">Email:{user.email}</Text>
