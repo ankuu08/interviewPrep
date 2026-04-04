@@ -6,7 +6,7 @@ import App from "./App.jsx";
 import { BrowserRouter } from 'react-router-dom'
 import { Toaster } from "@/components/ui/toaster";
 // import ChatProvider from "./context/chatProvider.jsx";
-import { ChatProvider } from "./context/ChatProvider";
+import ChatProvider from "./context/ChatProvider";
 createRoot(document.getElementById("root")).render(
   <BrowserRouter>
     <StrictMode>
