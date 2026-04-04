@@ -2,8 +2,6 @@ import React, { useState } from 'react'
 import { Button, Center, CloseButton, Dialog, Portal, Text, Avatar } from "@chakra-ui/react"
 import { FaRegEye } from "react-icons/fa";
 function ProfileModal({ user, info }) {
-  console.log(user);
-console.log(user.pic);
   const [open, setOpen] = useState(false)
   return (
     <>
