@@ -12,7 +12,6 @@ const ChatProvider = ({ children }) => {
   const history = useHistory();
   useEffect(() => {
     const userInfo = JSON.parse(localStorage.getItem('userInfo'));
-    console.log("userInfo:", userInfo);
     setuser(userInfo);
     if (!userInfo) {
       history.push('/');
