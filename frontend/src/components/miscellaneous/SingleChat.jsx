@@ -16,7 +16,7 @@ import AiModal from './AiModal';
 import { io } from 'socket.io-client';
 import Lottie from 'lottie-react';
 import Typing from '../../animations/Typing.json';
-const ENDPOINT = "http://localhost:5000";
+const ENDPOINT = window.location.origin;
 var socket, selectedChatcompare;
 function SingleChat({ fetchAgain, setfetchAgain }) {
   const [loading, setloading] = useState(false);
@@ -63,7 +63,7 @@ function SingleChat({ fetchAgain, setfetchAgain }) {
           Authorization: `Bearer ${user.token}`
         }
       }
-      const { data } = await axios.get(`/api/messages/${selectedchat._id} `, config);
+      const { data } = await axios.get(`/api/messages/${selectedchat._id}`, config);
       // console.log(data);
       setmessage(data);
       setloading(false);
@@ -77,7 +77,10 @@ function SingleChat({ fetchAgain, setfetchAgain }) {
   }
 
   useEffect(() => {
-    socket = io(ENDPOINT);
+    socket = io(ENDPOINT, {
+    transports: ["websocket"]
+  }
+);
     socket.emit("setup", user);
     socket.on("connected", () => setsocketconnected(true));
     socket.on("typing", () => setisTyping(true));
