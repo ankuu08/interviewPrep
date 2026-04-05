@@ -13,8 +13,10 @@ function EditorPage() {
   const hasjoined = useRef(false);
   const [code, setcode] = useState("");
   const [users, setusers] = useState([]);
-  var roomId;
-  var name;
+  // var roomId;
+  // var name;
+  const[roomId,setroomId]=useState();
+  const[name,setname]=useState();
   const lang = ['java', 'python', 'cpp', 'javascript']
   const [language, setlanguage] = useState("java");
   function handleEditorDidMount(editor, monaco) {
@@ -22,15 +24,17 @@ function EditorPage() {
     editor.focus();
   }
   useEffect(() => {
-    roomId = localStorage.getItem("code");
-    name = localStorage.getItem("name");
-    if (!roomId || !name) {
+    const roomId1 = localStorage.getItem("code");
+    const name1 = localStorage.getItem("name");
+    if (!roomId1 || !name1) {
       history.push("/chats/editor")
     }
+    setroomId(roomId1);
+    setname(name1)
     socket = io(ENDPOINT,{
       transports:["websocket"]
     });
-    socket.emit("join-room", { roomId, name });
+    socket.emit("join-room", { roomId:roomId1, name:name1 });
     socket.on("code-update", (newCode) => setcode(newCode));
     socket.on("user-update", (userList) => {
       setusers(userList);
