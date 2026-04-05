@@ -77,7 +77,7 @@ const Signup = () => {
         }
       }
       const { data } = await axios.post("/api/user", {
-        name, email, password, picture
+        name, email, password, pic:picture
       }, config);
       toaster.create({
         title: "Success!",
