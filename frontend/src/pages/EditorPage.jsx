@@ -4,16 +4,17 @@ import { Menu, Portal } from "@chakra-ui/react"
 import Editor from '@monaco-editor/react';
 import { io } from 'socket.io-client';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom';
-const ENDPOINT = "/";
+const ENDPOINT = window.location.origin;
 var socket;
 function EditorPage() {
   const history = useHistory()
   const editorRef = useRef(null);
+  const typingTimeout = useRef(null);
   const hasjoined = useRef(false);
   const [code, setcode] = useState("");
   const [users, setusers] = useState([]);
-  var roomId;
-  var name;
+  const roomId=useRef();
+  const name=useRef();
   const lang = ['java', 'python', 'cpp', 'javascript']
   const [language, setlanguage] = useState("java");
   function handleEditorDidMount(editor, monaco) {
@@ -21,13 +22,15 @@ function EditorPage() {
     editor.focus();
   }
   useEffect(() => {
-    roomId = localStorage.getItem("code");
-    name = localStorage.getItem("name");
-    if (!roomId || !name) {
+    roomId.current = localStorage.getItem("code");
+    name.current = localStorage.getItem("name");
+    if (!roomId.current || !name.current) {
       history.push("/chats/editor")
     }
-    socket = io(ENDPOINT);
-    socket.emit("join-room", { roomId, name });
+    socket = io(ENDPOINT,{
+      transports:["websocket"]
+    });
+    socket.emit("join-room", { roomId:roomId.current, name:name.current });
     socket.on("code-update", (newCode) => setcode(newCode));
     socket.on("user-update", (userList) => {
       setusers(userList);
@@ -40,8 +43,21 @@ function EditorPage() {
     })
   }, [])
   const handleChange = (value) => {
+    // setcode(value);
+    // socket.emit("code-change", { roomId:roomId.current, code: value })
     setcode(value);
-    socket.emit("code-change", { roomId, code: value })
+
+  if (typingTimeout.current) {
+    clearTimeout(typingTimeout.current);
+  }
+
+  typingTimeout.current = setTimeout(() => {
+    socket.emit("code-change", {
+      roomId: roomId.current,
+      code: value
+    });
+  }, 120); // 100–200ms is best
+};
   }
   return (
     <>
@@ -59,7 +75,7 @@ function EditorPage() {
                   {lang.map((l) => {
                     return <Menu.Item value={l} onClick={() => {
                       setlanguage(l)
-                      socket.emit("lang-change", { roomId, lang: l })
+                      socket.emit("lang-change", { roomId:roomId.current, lang: l })
                     }}>{l}</Menu.Item>
                   })}
 
